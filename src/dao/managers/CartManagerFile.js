@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import __dirname from "../utils.js";
+import __dirname from "../../utils.js";
 import { v4 as uuidv4 } from 'uuid';
 
 class CartManagerFile {
