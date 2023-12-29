@@ -3,19 +3,33 @@
 </div>
 <div>
     {{#if isAdmin}}
-
-        <ul>
-            {{#each products}}
-            <hr>
-            <li>{{title}}</li>
-            <li>{{description}}</li>
-            <li>{{code}}</li>
-            <li>{{price}}</li>
-            <li>{{stock}}</li>
-            <li>{{category}}</li>
-            <input type="submit" value="Agregar Al Carrito">
-            {{/each}}
-        </ul>
+<form action="/api/carts/" method="post">
+    <ul>
+        {{#each products}}
+        <hr>
+        <li>{{title}}</li>
+        <li>{{description}}</li>
+        <li>{{code}}</li>
+        <li>{{price}}</li>
+        <li>{{stock}}</li>
+        <li>{{category}}</li>
+        <input type="submit" value="Agregar al Carrito">
+        {{/each}}
+    </ul>
+</form>
+            <div>
+        ||
+        {{#if products.hasPrevPage}}
+            <a href="/products?page={{products.prevPage}}">Anterior</a>
+        {{/if}}
+        ||
+        <span>Página {{products.page}} de {{products.totalPages}}</span>
+        ||
+        {{#if products.hasNextPage}}
+            <a href="/products?page={{products.nextPage}}">Siguiente</a>
+        {{/if}}
+        ||
+    </div>
     {{else}}
     <div>No hay productos</div>
     {{/if}}

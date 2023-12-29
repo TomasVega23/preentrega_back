@@ -7,7 +7,6 @@ const productManagerDB = new ProductManagerDB();
 
 router.get('/', async (req,res)=>{
     try {
-
         const {limit, page, sort, category, price} = req.query
         const options = {
             limit: limit ?? 10,
@@ -17,10 +16,10 @@ router.get('/', async (req,res)=>{
         }
         const products = await productManagerDB.getProducts(options)
         if(products.hasPrevPage){
-            products.prevLink =  "page=1"
+            products.prevLink = "/products?page=1"
         }
         if(products.hasNextPage){
-            products.nextLink = "page=2"
+            products.nextLink = "/products?page=2"
         }
         
         res.send({

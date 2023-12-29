@@ -16,17 +16,17 @@ class ProductManagerDB {
             status: "success",
             msg: products
         }
-
-    }
-    getProductByID = async (pid) => {
     
+    };
+    getProductByID = async (pid) => {
         const product = await productsModel.findOne({_id:pid});
         return {
             status: "success",
             msg: product
         }
-
     }
-}
+    }
+
+
 
 export {ProductManagerDB};

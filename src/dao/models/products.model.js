@@ -14,10 +14,6 @@ const producSchema = new mongoose.Schema({
         type: Number,
         require: true
     },
-    thumbnail:{
-        type: String,   
-        require: true
-    },
     code:{
         type: String,
         require: true
