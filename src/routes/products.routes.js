@@ -7,7 +7,7 @@ const productManagerDB = new ProductManagerDB();
 
 router.get('/', async (req,res)=>{
     try {
-        const {limit, page, sort, category, price} = req.query
+        const {limit, page, sort} = req.query
         const options = {
             limit: limit ?? 10,
             page: page ?? 1,
@@ -15,19 +15,21 @@ router.get('/', async (req,res)=>{
             lean: true,
         }
         const products = await productManagerDB.getProducts(options)
-        if(products.hasPrevPage){
-            products.prevLink = "/products?page=1"
+        if (products.hasPrevPage) {
+            products.prevLink = `/products?page=${products.prevPage}`;
         }
-        if(products.hasNextPage){
-            products.nextLink = "/products?page=2"
+        
+        if (products.hasNextPage) {
+            products.nextLink = `/products?page=${products.nextPage}`;
         }
         
         res.send({
-            status:"succes",
+            status: "success",
             productos: products
         })
     } catch (error) {
-        console.log(error);
+        console.error(error);
+        res.status(500).send({ status: "error", error: "Internal Server Error" });
     }
 })
 

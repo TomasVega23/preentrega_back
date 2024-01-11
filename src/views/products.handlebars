@@ -3,9 +3,9 @@
 </div>
 <div>
     {{#if isAdmin}}
-<form action="/api/carts/" method="post">
     <ul>
         {{#each products}}
+    <form action="/api/carts" method="post">
         <hr>
         <li>{{title}}</li>
         <li>{{description}}</li>
@@ -13,24 +13,27 @@
         <li>{{price}}</li>
         <li>{{stock}}</li>
         <li>{{category}}</li>
-        <input type="submit" value="Agregar al Carrito">
+    <input type="hidden" name="productId" value="{{_id}}">
+    <input type="submit" value="Submit">
+    </form>
         {{/each}}
     </ul>
-</form>
-            <div>
+        <div>
         ||
         {{#if products.hasPrevPage}}
-            <a href="/products?page={{products.prevPage}}">Anterior</a>
+            <a href={{products.prevPage}}>Anterior</a>
         {{/if}}
-        ||
+            ||
         <span>Página {{products.page}} de {{products.totalPages}}</span>
         ||
         {{#if products.hasNextPage}}
-            <a href="/products?page={{products.nextPage}}">Siguiente</a>
+            <a href={{products.nextPage}}>Siguiente</a>
         {{/if}}
-        ||
-    </div>
+                ||
+            </div>
     {{else}}
     <div>No hay productos</div>
     {{/if}}
 </div>
+
+<script src="/index.js"></script>
