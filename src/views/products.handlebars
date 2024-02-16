@@ -2,6 +2,14 @@
     <h1>Product List</h1>
 </div>
 <div>
+        <h1>bienvenido/a</h1>
+    <p>{{user.full_name}}</p>
+    <p>{{user.email}}</p>
+    <p>{{user.age}}</p>
+    <p>{{user.rol}}</p>
+    <a href="/api/sessions/logout"><button>Salir</button></a>
+</div>
+<div>
     {{#if isAdmin}}
     <ul>
         {{#each products}}
@@ -36,4 +44,4 @@
     {{/if}}
 </div>
 
-<script src="/index.js"></script>
+<script src="/js/index.js"></script>
