@@ -27,7 +27,6 @@ router.get("/failedLogin", (req,res)=>{
     res.send("Fallo en el Login")
 })
 
-router.get("/current", SessionController.current);
 
 router.get("/github", passport.authenticate("github", {scope:['user:email']}), async (req,res)=>{});
 

@@ -26,21 +26,18 @@
     </form>
         {{/each}}
     </ul>
-        <div>
-        ||
-        {{#if products.hasPrevPage}}
-            <a href={{products.prevPage}}>Anterior</a>
-        {{/if}}
-            ||
-        <span>Página {{products.page}} de {{products.totalPages}}</span>
-        ||
-        {{#if products.hasNextPage}}
-            <a href={{products.nextPage}}>Siguiente</a>
-        {{/if}}
-                ||
+            <div>
+                {{#if products.hasPrevPage}}
+                    <a href="/products?page={{products.prevPage}}">Anterior</a>
+                {{/if}}
+                <span>Página {{products.page}} de {{products.totalPages}}</span>
+                {{#if products.hasNextPage}}
+                    <a href="/products?page={{products.nextPage}}">Siguiente</a>
+                {{/if}}
             </div>
+        </div>
     {{else}}
-    <div>No hay productos</div>
+        <p>No hay productos disponibles.</p>
     {{/if}}
 </div>
 

@@ -20,19 +20,6 @@ class SessionController{
                 payload:serializedUser
             })
         }
-    static current = async (req, res)=>{
-            if (req.isAuthenticated()) {
-            const serializedUser = {
-                id: req.user._id,
-                name: `${req.user.first_name} ${req.user.last_name}`,
-                role: req.user.role,
-                email: req.user.email,
-            };
-            res.json(serializedUser);
-            } else {
-                res.status(401).json({ message: 'No autenticado' });
-            }
-        }
     static github = async (req, res)=>{
             req.session.user = req.user;
             res.redirect("/products")

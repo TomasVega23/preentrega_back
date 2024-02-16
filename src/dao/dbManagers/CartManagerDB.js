@@ -2,17 +2,30 @@ import cartsModel from "../models/cart.model.js";
 import productsModel from "../models/products.model.js";
 
 class CartManagerDB {
-
-    getCarts = async () => {
-        const carts = await cartsModel.find()
-        return carts;
-    }
-    getCartByID = async (cid) => {
-        const cart = await cartsModel.find({_id:cid})
-        return cart;
+    constructor(){
+        this.cartmodel = cartsModel;
+        this.productModel = productsModel;
     }
 
-    createCart = async (cid) => {
+    async getCarts() {
+        try {
+            const carts = await this.cartmodel.find();
+            return carts;
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
+
+    async getCartByID(cid) {
+        try {
+            const cart = await this.cartmodel.findById(cid);
+            return cart;
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
+
+    async createCart(cid) {
         try {
             const id = cid;
             const newCart = { id, products: [] };
@@ -23,16 +36,16 @@ class CartManagerDB {
         }
     }
 
-    addProductInCart = async (cid, pid, quantity = 1) => {
+    async addProductInCart  (cid, pid, quantity = 1)  {
         try {
-            const cart = await cartsModel.findById(cid);
+            const cart = await this.cartmodel.findById(cid);
             if (!cart) {
                 return {
                     status: "error",
                     msg: `El carrito con el id ${cid} no existe`
                 };
             }
-            const product = await productsModel.findById(pid);
+            const product = await this.productModel.findById(pid);
             if (!product) {
                 return {
                     status: "error",

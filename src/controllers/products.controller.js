@@ -1,31 +1,16 @@
 import productsModel from "../dao/models/products.model.js";
-import {ProductManagerDB} from "../dao/dbManagers/ProductManagerdb.js"
+import {ProductManagerDB} from "../dao/dbManagers/ProductManagerDB.js"
 
 const productManagerDB = new ProductManagerDB();
 
 class ProductController{
     static getProducts = async (req,res)=>{
         try {
-            const {limit, page, sort} = req.query
-            const options = {
-                limit: limit ?? 10,
-                page: page ?? 1,
-                sort: { price: sort === "asc" ? 1 : -1},
-                lean: true,
-            }
-            const products = await productManagerDB.getProducts(options)
-            if (products.hasPrevPage) {
-                products.prevLink = `/products?page=${products.prevPage}`;
-            }
+            const { limit = 10, page = 1, sort = '', query = '' } = req.query;
+
+            const products = await prod.getProducts( limit, page, sort, query);
+            res.send({products})
             
-            if (products.hasNextPage) {
-                products.nextLink = `/products?page=${products.nextPage}`;
-            }
-            
-            res.send({
-                status: "success",
-                productos: products
-            })
         } catch (error) {
             console.error(error);
             res.status(500).send({ status: "error", error: "Internal Server Error" });
