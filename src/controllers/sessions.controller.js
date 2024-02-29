@@ -59,6 +59,19 @@ class SessionController{
             message:"contraseña restaurada"
         })
     }
+    static currentUser = async (req,res)=>{
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            if (err || !user) {
+                return res.status(400).json({
+                    message: "No se pudo autenticar el usuario",
+                    error: err || info
+                });
+            }
+            res.json({ user: req.user });
+        })(req, res);
+    };    
+    
 }
+
 
 export {SessionController}
