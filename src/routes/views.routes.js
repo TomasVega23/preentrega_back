@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {ViewController} from "../controllers/views.controller.js"
+import { checkRole } from "../midleware/authorizationMiddleware.js";
 
 
 const router = Router();
@@ -19,7 +20,7 @@ router.get("/products", ViewController.products)
 
 router.get("/carts", ViewController.carts)
 
-router.get("/chat", ViewController.chat)
+router.get("/chat", checkRole('user'), ViewController.chat)
 
 router.get('/usersregister', publicAccess, (req,res)=>{
     res.render('usersregister')

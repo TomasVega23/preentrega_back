@@ -1,18 +1,14 @@
-import productsModel from "../dao/models/products.model.js";
-import {ProductManagerDB} from "../dao/dbManagers/ProductManagerDB.js"
-import { errorHandler } from "../midleware/errorHandler.js";
-import { EError } from "../enums/EError.js";
-import { CustomError } from "../services/customError.service.js";
-import { generateProductParam } from "../services/productErrorParam.js";
+import productModel from "../dao/models/products.model.js";
+import mongoosepaginte from "mongoose-paginate-v2";
 
-const productManagerDB = new ProductManagerDB();
+productModel.schema.plugin(mongoosepaginte);
 
-class ProductController{
-    static getProducts = async (req,res)=>{
+export class Productrepository {
+    getProducts = async (req,res)=>{
         try {
             const { limit = 10, page = 1, sort = '', query = '' } = req.query;
 
-            const products = await prod.getProducts( limit, page, sort, query);
+            const products = await productModel.findById( limit, page, sort, query);
             res.send({products})
             
         } catch (error) {
@@ -20,17 +16,17 @@ class ProductController{
             res.status(500).send({ status: "error", error: "Internal Server Error" });
         }
     }
-    static getProductByID = async (req,res)=>{
+
+    getProductByID = async (req,res)=>{
         const pid = req.params.pid;
-        const product = await productManagerDB.getProductByID(pid);
+        const product = await productModel.findById(pid);
         if (!product) {  
             return res.status(404).json({ error: 'Producto no encontrado' });
         }
         res.json(product);
     }
 
-
-    static createProduct =  async (req, res) => {
+    createProduct =  async (req, res) => {
         const {title, description, code, price, stock, category}= req.body;
         if (!title || !description || !code || !price || !stock || !category) {
             return res.status(400).send({
@@ -46,7 +42,7 @@ class ProductController{
             stock,
             category
         }
-        const result = await productsModel.create(product);
+        const result = await productModel.create(product);
     
         res.send({
             status: "success",
@@ -54,7 +50,7 @@ class ProductController{
         })
     }
 
-    static updateProduct = async (req, res) => {
+    updateProduct = async (req, res) => {
         const id = req.params.pid;
         const {title, description, code, price, stock, category}= req.body;
         const updatedProduct = {
@@ -65,16 +61,16 @@ class ProductController{
             stock,
             category
         }
-        const result = await productsModel.updateOne({ _id: id }, {$set:updatedProduct});
+        const result = await productModel.updateOne({ _id: id }, {$set:updatedProduct});
         res.send({
             status: "success",
             message: result
         })
     }
 
-    static deleteProduct = async (req, res) => {
+    deleteProduct = async (req, res) => {
         const id = req.params.pid;
-        const result = await productsModel.deleteOne({ _id: id });
+        const result = await productModel.deleteOne({ _id: id });
         res.send({
             status: "success",
             message: result
@@ -82,4 +78,3 @@ class ProductController{
     }
 }
 
-export { ProductController }

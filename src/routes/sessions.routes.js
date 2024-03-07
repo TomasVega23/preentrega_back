@@ -1,5 +1,6 @@
 import {Router} from "express";
 import { SessionController } from "../controllers/sessions.controller.js"
+import { GetUserDto } from "../dao/dto/user.dto.js";
 import passport from "passport"
 
 
@@ -37,6 +38,29 @@ router.get("/githubcallback", passport.authenticate("github", {failureRedirect:'
 router.get('/logout',SessionController.logout);
 
 router.post("/restartPassword", SessionController.restartPassword);
+
+router.get("/current", (req, res) => {
+    try {
+      if (req.session && req.session.user) {
+        const userDTO = new GetUserDto(req.session.user);
+        res.status(200).json({
+          status: "success",
+          user: userDTO
+        });
+      } else {
+        res.status(401).json({
+          status: "error",
+          message: "No hay sesión de usuario activa"
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        status: "error",
+        message: "Error al obtener el usuario actual"
+      });
+    }
+  });
 
 
 export default router;
